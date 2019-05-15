@@ -1,0 +1,191 @@
+{% extends "base_inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<style type="text/css">
+    .hidden {
+        display: none;
+    }
+    .archivo {
+        width: 100%;
+        float: left;
+        margin-top: 30px;
+        text-align: center;
+    }
+</style>
+
+<div style="text-align: center; margin-top: 20px; height:580px;" class="card card-body bg-light">
+
+    <h1 class="titl" style="font-size: 24px; color: #06a">Ingreso al Sistema</h1>
+
+    <div class="dialog ui-corner-all" style="height: 295px;padding: 10px;width: 910px;margin: auto;margin-top: 5px">
+        <div>
+            <img src="{% static "images/bitacora.png" %}" style="padding: 40px;"/>
+        </div>
+
+        <div style="width: 100%;height: 20px;float: left;margin-top: 30px;text-align: center">
+            <a href="#" id="ingresar" class="btn btn-primary" style="width: 120px; margin: auto">
+                <i class="icon-off"></i>Ingresar</a>
+        </div>
+
+        <div class="archivo">
+            Para mayor información puede consultar el
+            <a href="${createLink(uri: '/descriptivo.pdf')}"><img
+                    src="{% static "images/pdf_pq.png" %}"/>descriptivo del sistema</a>
+        </div>
+
+
+        <p class="text-info pull-right" style="font-size: 10px; margin-top: 20px">
+            Desarrollado por: TEDEIN S.A. Versión ${message(code: 'version', default: '1.1.0x')}
+        </p>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-ingreso" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" id="modalBody" style="width: 380px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ingreso a Bitácora</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+
+            <div class="modal-body" style="width: 280px; margin: auto">
+{#                <form name="frmLogin" action="/login/"  method="GET" novalidate>#}
+                <form name="frmLogin" method="POST" novalidate>
+{#                    {% csrf_token %}#}
+{#                    <div class="form-group">#}
+                    <div class="form-group row">
+                        <label class="col-md-5" for="login">Usuario</label>
+
+                        <div class="controls col-md-5">
+                            <input name="login" id="login" type="text" class="form-control required"
+                                   placeholder="Usuario" required autofocus style="width: 160px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-5" for="pass">Contraseña</label>
+
+                        <div class="controls col-md-5">
+                            <input name="pass" id="pass" type="password" class="form-control required"
+                                   placeholder="Contraseña" required style="width: 160px;">
+                        </div>
+                    </div>
+
+                    <div class="divBtn" style="width: 100%">
+                        <a href="#" class="btn btn-primary btn-lg btn-block" id="btn-login"
+                           style="width: 140px; margin: auto">
+                            <i class="fa fa-lock"></i> Ingresar
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cargando" class="text-center hidden">
+    <img src="{% static "images/spinner32.gif" %}" alt='Cargando...' width="32px" height="32px"/>
+</div>
+
+<script type="text/javascript">
+
+    var $frm = $("#frmLogin");
+
+    function doLogin() {
+        console.log('valida...')
+        {#console.log('valida', $frm.valid())#}
+        {#if ($frm.valid()) {#}
+        $("#cargando").removeClass('hidden');
+        $("#btn-login").replaceWith($("#cargando"));
+        var usro = $("#login").val()
+        var pswd = $("#pass").val()
+        var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            url: "/ingreso",
+            dataType: "json",
+            data: {
+                username: usro,
+                pswd: pswd,
+                csrfmiddlewaretoken: csrfToken,
+            },
+            success: function (data) {
+                console.log("retorna", data)
+                if (data.resp == 'ok') {
+                    location.href= '/perfil'
+                } else {
+                    location.reload()
+                }
+            }
+        })
+    }
+
+    $(function () {
+        $("#ingresar").click(function () {
+            var initModalHeight = $('#modal-ingreso').outerHeight();
+            //alto de la ventana de login: 270
+            $("#modalBody").css({'margin-top': ($(document).height() / 2 - 135)}, {'margin-left': $(window).width() / 2});
+            $("#modal-ingreso").modal();
+
+            setTimeout(function () {
+                $("#login").focus();
+            }, 500);
+        });
+
+        $("#btn-login").click(function () {
+            console.log('proces ingresar')
+            doLogin();
+        });
+
+
+        $("input").keyup(function (ev) {
+            if (ev.keyCode == 13) {
+                doLogin();
+            }
+        })
+    });
+
+{% comment %}
+ $(function () {
+        $("#ingresar").on('click', function (event) {
+            console.log('bootbox');
+            event.preventDefault();
+
+            var _button = $(this);
+
+            bootbox.confirm({
+                title: "Destroy planet?",
+                message: "Do you want to delete? This cannot be undone.",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        var data = _button.closest('form').serialize();
+
+                        $.post('your delete URL here', data).
+                            done(function(response, status, jqxhr){
+                            })
+                            .fail(function(jqxhr, status, errorThrown){
+                            });
+                    }
+                }
+            });
+        });
+    });
+{% endcomment %}
+
+</script>
+
+
+
+{% endblock content %}
