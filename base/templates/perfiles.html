@@ -4,16 +4,26 @@
 
 {% block content %}
 
+<style type="text/css">
+    .hidden {
+        display: none;
+    }
+</style>
+
         <div style="text-align: center; width: 100%; margin-left: 35%; margin-top: 20%">
-            <form name="frmLogin" class="form-signin well" role="form" style="width: 300px;">
+            <form id="frmLogin" action="/index/" method="POST" class="form-signin well" role="form" style="width: 300px;">
                 <h2 class="text-center">Perfil</h2>
-                <select name="somename">
-                    {% for prfl in perfiles %}
-                        <option value="{{ prfl.id }}"> {{ prfl.dscr }} </option>
-                    {% endfor %}
-                </select>
-                <select name="prfl" class="form-control" from="${perfilesUsr}" optionKey="id" optionValue="perfil"/>
-                <div class="divBtn">
+{#                {{ perfiles }}#}
+                {% csrf_token %}
+                <div style="height: 100px; border: #0f6674; border-style: solid; border-width: thin">
+                    Seleccione el Perfil <br>
+                    <select name="perfil" style="width: 200px; margin-top: 20px">
+                        {% for prfl in perfiles %}
+                            <option value="{{ prfl.id }}"> {{ prfl.descripcion }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="divBtn" style="margin-top: 20px">
                     <a href="#" class="btn btn-primary btn-lg btn-block btn-login" style="width: 140px; margin: auto">
                         <i class="fa fa-lock"></i> Entrar
                     </a>
@@ -27,14 +37,11 @@
         <script type="text/javascript">
             var $frm = $("#frmLogin");
             function doLogin() {
-                if ($frm.valid()) {
-                    $("#cargando").removeClass('hidden');
-                    $(".btn-login").replaceWith($("#cargando"));
-                    $("#frmLogin").submit();
-                }
+                $("#frmLogin").submit();
             }
+
             $(function () {
-                $frm.validate();
+                {#$frm.validate();#}
                 $(".btn-login").click(function () {
                     doLogin();
                 });

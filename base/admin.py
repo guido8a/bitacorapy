@@ -13,3 +13,9 @@ class BaseAdmin(admin.ModelAdmin):
     search_fields = ('tema', 'problema', 'algoritmo', 'fecha')
 
 admin.site.register(models.Base, BaseAdmin)
+
+class PerfilAdmin(admin.ModelAdmin):
+    list_display = ('descripcion',)
+    search_fields = ('descripcion',)
+
+admin.site.register(models.Perfil, PerfilAdmin)

@@ -53,9 +53,10 @@
             </div>
 
             <div class="modal-body" style="width: 280px; margin: auto">
-{#                <form name="frmLogin" action="/login/"  method="GET" novalidate>#}
-                <form name="frmLogin" method="POST" novalidate>
-{#                    {% csrf_token %}#}
+                <form id="frmLogin" action="/ingreso/"  method="POST" novalidate>
+{#                <form name="frmLogin" action="/ingreso/"  method="POST" novalidate>#}
+{#                <form name="frmLogin" method="POST" novalidate>#}
+                    {% csrf_token %}
 {#                    <div class="form-group">#}
                     <div class="form-group row">
                         <label class="col-md-5" for="login">Usuario</label>
@@ -105,6 +106,8 @@
         var usro = $("#login").val()
         var pswd = $("#pass").val()
         var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+        $("#frmLogin").submit()
+{% comment %}
         $.ajax({
             url: "/ingreso",
             dataType: "json",
@@ -122,6 +125,7 @@
                 }
             }
         })
+{% endcomment %}
     }
 
     $(function () {
