@@ -13,4 +13,6 @@ urlpatterns = [
     path("inicio/", TemplateView.as_view(template_name="inicio.html"), name="inicio",),
     url(r"^salir", views.salir, name='salir'),
     path("base/", TemplateView.as_view(template_name="busquedaBase.html"), name="base",),
+    url(r"^buscar", views.buscar, name='buscar'),
+
 ]

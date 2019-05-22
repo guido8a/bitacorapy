@@ -16,12 +16,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(db_column='base__id', primary_key=True, serialize=False)),
                 ('problema', models.TextField(db_column='baseprbl', max_length=255)),
-                ('algoritmo', models.TextField(db_column='basealgr', max_length=255)),
-                ('solucion', models.TextField(blank=True, db_column='baseslcn')),
-                ('clave', models.CharField(db_column='baseclve', max_length=127)),
-                ('referencia', models.TextField(db_column='baserefe', max_length=255)),
-                ('observacion', models.TextField(db_column='baseobsr', max_length=255)),
-                ('fecha', models.DateTimeField(auto_now=True, db_column='basefcha')),
+                ('algoritmo', models.TextField(db_column='basealgr', max_length=255, null=True, blank=True)),
+                ('solucion', models.TextField(blank=True, db_column='baseslcn', null=True)),
+                ('clave', models.CharField(db_column='baseclve', max_length=127, null=True, blank=True)),
+                ('referencia', models.TextField(db_column='baserefe', max_length=255, null=True, blank=True)),
+                ('observacion', models.TextField(db_column='baseobsr', max_length=255, null=True, blank=True)),
+                ('fecha', models.DateTimeField(auto_now=True, db_column='basefcha', null=True, blank=True)),
             ],
             options={
                 'db_table': 'base',

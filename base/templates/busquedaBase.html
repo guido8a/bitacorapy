@@ -26,6 +26,15 @@
         cursor: pointer;
         color: #ccc;
     }
+    table {
+        table-layout: fixed;
+        overflow-x: scroll;
+    }
+    th, td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+    }
 </style>
 
 <div style="margin-top: 30px; min-height: 60px" class="vertical-container">
@@ -64,7 +73,7 @@
         </thead>
     </table>
 
-    <div id="bandeja">
+    <div id="tabla">
     </div>
 </div>
 
@@ -92,6 +101,9 @@
 </div>
 
 <script type="text/javascript">
+    var spinnerUrl = "{% static "images/spinner32.gif" %}"
+
+	var spinner = $("<img src='" + spinnerUrl + "' alt='Cargando...'/>");
 
     $(function () {
 
@@ -102,21 +114,19 @@
     });
 
     $(".btnBusqueda").click(function () {
-        $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinnerSquare64));
+        $("#tabla").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinner));
         var buscar = $("#buscar").val();
-
-        var datos = "buscar=" + buscar;
-        var csrfToken = $('[name=csrfmiddlewaretoken]').val();
-
         $.ajax({
             type: "POST",
-            url: "/buscar",
-            data: datos,
+            url: "/buscar/",
+            data: {
+                buscar: buscar
+            },
             success: function (msg) {
-                $("#bandeja").html(msg);
+                $("#tabla").html(msg);
             },
             error: function (msg) {
-                $("#bandeja").html("Ha ocurrido un error");
+                $("#tabla").html("Ha ocurrido un error");
             }
         });
 

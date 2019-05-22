@@ -4,9 +4,15 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import Perfil
+from .models import Base
 from django.shortcuts import redirect
 from django.contrib.auth.hashers import make_password
 from django.contrib import auth
+from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+from django.db import connection
+from common import funciones
 
 
 class Conectado(CreateView):
@@ -63,3 +69,36 @@ def salir(request):
     request.session.clear()
     return redirect('/')
 
+@csrf_exempt
+def buscar(request):
+    print("buscar {}".format(request))
+    print(request.POST.get('buscar', None))
+
+    buscar = tuple(request.POST.get('buscar', None).split(' '))
+    print(buscar)
+    # sql = "select base__id, sum(plbrvlor) valor from plbr where plbrplbr like '%{}%' group by base__id order by 2".format(buscar[0])
+    sql = "select base__id from plbr where plbrplbr like '%{}%' group by base__id order by sum(plbrvlor) desc".format(buscar[0])
+    print(sql)
+    # retorna = ejecuta_sql(sql)
+    retorna = funciones.ejecutaSql(sql)
+    data = set()
+    for d in retorna:
+        print(d)
+        print("id: {}".format(d[0]))
+        base = Base.objects.get(id=d[0])
+        data.add(base)
+
+    if(data):
+        # print(data[0].tema.descripcion)
+        resp = render_to_string('tablaBusquedaBase.html', {'data': data})
+        # print("----> {}".format(len(data)))
+        return HttpResponse(resp)
+    else:
+        return redirect('/base')
+
+
+# def ejecuta_sql(txsql):
+#     with connection.cursor() as cursor:
+#         cursor.execute(txsql)
+#         row = cursor.fetchall()
+#     return row
