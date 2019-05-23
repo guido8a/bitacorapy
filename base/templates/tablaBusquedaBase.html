@@ -1,8 +1,15 @@
+
+ {% load static %}
+<link  rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+<script src="{%  static 'js/cntx/dist/context-menu.min.js' %}"></script>
+
+
+
 <div class="" style="width: 99.7%; height: 600px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-condensed table-hover" width="1060px">
         {% for dato in data %}
 
-            <tr id="{{ dato.id }}" data-id="{{ dato.id }}" class="principal">
+            <tr id="{{ dato.id }}" data-id="{{ dato.id }}" class="principal tabla">
                 <td width="120px">
                     {{ dato.tema.descripcion }}
                 </td>
@@ -25,15 +32,89 @@
 
 
 <script type="text/javascript">
-    $(function () {
-        $("tr").contextMenu({
-            items  : createContextMenu,
-            onShow : function ($element) {
-                $element.addClass("trHighlight");
+    {#$(function () {#}
+    {#    $("tr").contextMenu({#}
+    {#        items  : createContextMenu,#}
+    {#        onShow : function ($element) {#}
+    {#            $element.addClass("trHighlight");#}
+    {#        },#}
+    {#        onHide : function ($element) {#}
+    {#            $(".trHighlight").removeClass("trHighlight");#}
+    {#        }#}
+    {#    });#}
+    {# });#}
+
+
+
+    var myMenu = [{
+
+            // Menu Icon.
+            // This example uses Font Awesome Iconic Font.
+            icon: 'fa fa-home',
+
+            // Menu Label
+            label: 'Homepage',
+
+            // Callback
+            action: function(option, contextMenuIndex, optionIndex) {},
+
+            // An array of submenu objects
+            submenu: null,
+
+            // is disabled?
+            disabled: false   //Disabled status of the option
+        },
+            {
+                icon: 'fa fa-user',
+                label: 'Profile',
+                action: function(option, contextMenuIndex, optionIndex) {},
+                submenu: null,
+                disabled: false
             },
-            onHide : function ($element) {
-                $(".trHighlight").removeClass("trHighlight");
-            }
+            {
+                icon: 'fa fa-envelope',
+                label: 'Contact',
+                action: function(option, contextMenuIndex, optionIndex) {},
+                submenu: null,
+                disabled: false
+            },
+            {
+                //Menu separator
+                separator: true
+            },
+            {
+                icon: 'fa fa-share',
+                label: 'Social Share',
+                action: function(option, contextMenuIndex, optionIndex) {},
+                submenu: [{ // sub menus
+                    icon: 'fa fa-facebook',
+                    label: '<a href="https://www.jqueryscript.net/tags.php?/Facebook/">Facebook</a>',
+                    action: function(option, contextMenuIndex, optionIndex) {},
+                    submenu: null,
+                    disabled: false
+                },
+                    {
+                        icon: 'fa fa-<a href="https://www.jqueryscript.net/tags.php?/twitter/">twitter</a>',
+                        label: 'Twitter',
+                        action: function(option, contextMenuIndex, optionIndex) {},
+                        submenu: null,
+                        disabled: false
+                    },
+                    {
+                        icon: 'fa fa-google-plus',
+                        label: 'Google Plus',
+                        action: function(option, contextMenuIndex, optionIndex) {},
+                        submenu: null,
+                        disabled: false
+                    }],
+                disabled: false
+            },
+        ];
+
+        $('.tabla').on('contextmenu', function(e) {
+            e.preventDefault();
+            superCm.createMenu(myMenu, e);
         });
-    });
+
+
 </script>
