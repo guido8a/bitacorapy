@@ -1,4 +1,7 @@
 {% load static %}
+{% load fontawesome %}
+{% fontawesome_stylesheet %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +14,8 @@
     <title>Bitácora</title>
     <link  rel="stylesheet" href="{% static "css/CustomSvt.css" %}">
     <link  rel="stylesheet" href="{% static "css/font-tulpen/stylesheet.css" %}">
-
     <link  rel="stylesheet" href="{% static "css/custom/tablas.css" %}">
-    <script src="{%  static 'js/cntx/dist/context-menu.min.js' %}"></script>
+    <link  rel="stylesheet" href="{% static "js/cntx/dist/context-menu.min.css" %}">
     <title>Bitácora</title>
 </head>
 <body>
@@ -41,6 +43,9 @@
     <script type="text/javascript" src="{% static "js/popper.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static 'js/cntx/dist/context-menu.min.js' %}"></script>
+
+
     {% block content %}
     {% endblock content %}
 </body>

@@ -13,6 +13,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.db import connection
 from common import funciones
+import time
 
 
 class Conectado(CreateView):
@@ -71,6 +72,7 @@ def salir(request):
 
 @csrf_exempt
 def buscar(request):
+    start_time = time.time()
     print("buscar {}".format(request))
     print(request.POST.get('buscar', None))
 
@@ -83,8 +85,8 @@ def buscar(request):
     retorna = funciones.ejecutaSql(sql)
     data = set()
     for d in retorna:
-        print(d)
-        print("id: {}".format(d[0]))
+        # print(d)
+        # print("id: {}".format(d[0]))
         base = Base.objects.get(id=d[0])
         data.add(base)
 
@@ -92,13 +94,9 @@ def buscar(request):
         # print(data[0].tema.descripcion)
         resp = render_to_string('tablaBusquedaBase.html', {'data': data})
         # print("----> {}".format(len(data)))
+        elapsed_time = time.time() - start_time
+        print(elapsed_time)
         return HttpResponse(resp)
     else:
         return redirect('/base')
 
-
-# def ejecuta_sql(txsql):
-#     with connection.cursor() as cursor:
-#         cursor.execute(txsql)
-#         row = cursor.fetchall()
-#     return row
