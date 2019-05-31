@@ -20,6 +20,12 @@
     top           : -6px;
 }
 
+/*
+.lzm-dropdown-menu:hover {
+    background-color: #e4e4e0;
+}
+*/
+
 .lzm-dropdown-submenu {
     position : relative;
 }
@@ -78,4 +84,8 @@
 
 .lzm-dropdown-submenu-content:before, .lzm-dropdown-submenu-content:after {
     border : none;
+}
+
+.lzm-dropdown-item:hover {
+    background-color: #d0d0d0;
 }

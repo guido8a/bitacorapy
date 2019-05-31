@@ -44,7 +44,7 @@
              * * 'icon' - a string, can be a path to an icon or a className,
              * if using an image that is in the current directory use a './' prefix, otherwise it will be detected as a class
              */
-            items           : function (o, cb) { // Could be an object directly
+            items : function (o, cb) { // Could be an object directly
                 return {
                     header : {
                         header : true,
@@ -72,7 +72,7 @@
                     },
                     links  : {
                         separator_before : true,
-                        icon             : "./webapp/images/internet.png",
+                        // icon             : "./webapp/images/internet.png",
                         separator_after  : false,
                         label            : "Links",
                         action           : false,
@@ -137,7 +137,7 @@
         });
 
         function createContextMenu(items, $element, submenu) {
-            var $menu = $("<ul class='lzm-dropdown-menu dropdown-menu'>");
+            var $menu = $("<ul class='dropdown-menu lzm-dropdown-menu'>");
             if(submenu) {
                 $menu.addClass("lzm-dropdown-submenu-content");
             }
@@ -151,7 +151,7 @@
                 if (obj.separator_before) {
                     $menu.append("<li class='divider'></li>");
                 }
-                var clase = "";
+                var clase = "dropdown-item lzm-dropdown-item";
                 if (obj.header) {
                     clase = "dropdown-header lzm-dropdown-header";
                 }
@@ -180,7 +180,7 @@
                 }
 
                 if (!obj.header) {
-                    var $a = $("<a tabindex='-1' href='#'>");
+                    var $a = $("<a tabindex='-1' href='#' style='color: #0b2e13; text-decoration: none' > ");
                     if ($i) {
                         $a.append($i).append("&nbsp;");
                     }
