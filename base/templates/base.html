@@ -15,7 +15,10 @@
     <link  rel="stylesheet" href="{% static "css/CustomSvt.css" %}">
     <link  rel="stylesheet" href="{% static "css/font-tulpen/stylesheet.css" %}">
     <link  rel="stylesheet" href="{% static "css/custom/tablas.css" %}">
-    <link  rel="stylesheet" href="{% static "js/cntx/dist/context-menu.min.css" %}">
+{#    <link  rel="stylesheet" href="{% static "js/cntx/dist/context-menu.min.css" %}">#}
+
+    <link  rel="stylesheet" href="{% static "css/lzm.context-0.5.css" %}">
+
     <title>Bitácora</title>
 </head>
 <body>
@@ -43,7 +46,11 @@
     <script type="text/javascript" src="{% static "js/popper.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
-    <script type="text/javascript" src="{% static 'js/cntx/dist/context-menu.min.js' %}"></script>
+{#    <script type="text/javascript" src="{% static 'js/cntx/dist/context-menu.min.js' %}"></script>#}
+
+{#    context menu para el click derecho#}
+	<script type="text/javascript" src="{% static 'js/lzm.context-0.5.js' %}"></script>
+
 
 
     {% block content %}
