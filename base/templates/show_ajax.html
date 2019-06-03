@@ -1,0 +1,73 @@
+<style type="text/css">
+
+    .texto-verde {
+        color: #186063;
+    }
+    .texto-azul {
+        color: #1d63b0;
+        font-weight: bold;
+    }
+</style>
+
+    {% if data.problema %}
+        <div class="alert alert-dismissible alert-success" style="font-size: 16px;">
+            <strong>Problema:</strong>
+            {{ data.problema }}
+        </div>
+    {% endif %}
+
+    {% if data.solucion %}
+        <div class="alert alert-dismissible alert-info" style="font-size: 15px;">
+            <strong>Solución:</strong>
+            {{ data.solucion }}
+        </div>
+    {% endif %}
+
+
+    <div class="row" style="margin-bottom: 10px;">
+        <strong style="margin-left: 15px">Algoritmo:</strong>
+        <div class="col-xs-12" style="background: #eeeeee; max-height: 400px; overflow: auto; padding: 20px;width: 100%">
+            {{ data.algoritmo|safe }}
+{#            <util:renderHTML html="${baseInstance.algoritmo}"/>#}
+        </div>
+    </div>
+
+    {% if data.clave %}
+        <div class="row">
+            <div class="col-md-12 texto-verde">
+                <strong>Palabras Clave</strong>: {{ data.clve }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if data.referencia %}
+        <div class="row">
+            <div class="col-md-1" style="font-weight: bolder">
+                Referencias:
+            </div>
+            <div class="col-md-11 texto-azul">
+                {{ baseInstance.referencia }}
+            </div>
+        </div>
+    {% endif %}
+    
+    {% if data.observacion %}
+        <div class="row">
+            <div class="col-md-12">
+                <strong>Observaciones:</strong> {{ data.observaciones }}
+            </div>
+        </div>
+    {% endif %}
+
+    
+    {% if data.fecha %}
+        <div class="row">
+            <div class="col-md-12">
+                Creado el {{ data.fecha|date:"Y-M-d h:i a" }}
+                Dentro del tema: {{ data.tema.descripcion }}
+            </div>
+            
+        </div>
+    {% endif %}
+
+

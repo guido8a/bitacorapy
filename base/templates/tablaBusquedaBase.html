@@ -26,102 +26,6 @@
 
 <script type="text/javascript">
 
-    {#$(function () {#}
-    {#    $("tr").contextMenu({#}
-    {#        items  : createContextMenu,#}
-    {#        onShow : function ($element) {#}
-    {#            $element.addClass("trHighlight");#}
-    {#        },#}
-    {#        onHide : function ($element) {#}
-    {#            $(".trHighlight").removeClass("trHighlight");#}
-    {#        }#}
-    {#    });#}
-    {# });#}
-
-
-{% comment %}
-    var myMenu = [
-    {
-        icon: 'fa fa-home',
-        label: 'Ver',
-
-        // Callback
-        action: function (option, contextMenuIndex, optionIndex) {
-            {#$("#dialog-body").html(spinner);#}
-            var id = $(this).data("id");
-            console.log('id:', id)
-            $.ajax({
-                type: 'POST',
-                {#url: '${createLink(controller: 'base', action: 'ver_ajax')}',#}
-                data: {
-                    id: id
-                },
-                success: function (msg) {
-                    $("#dialog-body").html(msg)
-                }
-            });
-            $("#dialog").modal("show");
-        },
-
-        // An array of submenu objects
-        submenu: null,
-
-        // is disabled?
-        disabled: false   //Disabled status of the option
-    },
-    {
-        icon: 'fa fa-user',
-        label: 'Profile',
-        action: function (option, contextMenuIndex, optionIndex) {
-        },
-        submenu: null,
-        disabled: false
-    },
-    {
-        icon: 'fa fa-envelope',
-        label: 'Contact',
-        action: function (option, contextMenuIndex, optionIndex) {
-        },
-        submenu: null,
-        disabled: false
-    },
-    {
-        //Menu separator
-        separator: true
-    },
-    {
-        icon: 'fa fa-share',
-        label: 'Social Share',
-        action: function (option, contextMenuIndex, optionIndex) {
-    },
-        submenu: [{ // sub menus
-            icon: 'fa fa-facebook',
-            label: '<a href="https://www.jqueryscript.net/tags.php?/Facebook/">Facebook</a>',
-            action: function (option, contextMenuIndex, optionIndex) {
-            },
-            submenu: null,
-            disabled: false
-        },
-        {
-            icon: 'fa fa-<a href="https://www.jqueryscript.net/tags.php?/twitter/">twitter</a>',
-            label: 'Twitter',
-            action: function (option, contextMenuIndex, optionIndex) {
-            },
-            submenu: null,
-            disabled: false
-        }],
-        disabled: false
-    }];
-{% endcomment %}
-
-{% comment %}
-    $('.tabla').on('contextmenu', function (e) {
-        e.preventDefault();
-        superCm.createMenu(myMenu, e);
-    });
-{% endcomment %}
-
-
 
     function createContextMenu(node) {
         var $tr = $(node);
@@ -143,7 +47,7 @@
                 $("#dialog-body").html(spinner);
                 $.ajax({
                     type: 'POST',
-                    {#url: '${createLink(controller: 'base', action: 'ver_ajax')}',#}
+                    url: "/ver_base",
                     data: {
                         id: id
                     },

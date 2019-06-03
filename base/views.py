@@ -100,3 +100,21 @@ def buscar(request):
     else:
         return redirect('/base')
 
+@csrf_exempt
+def ver_base(request):
+    print("ver_base {}".format(request))
+    base_id = request.POST.get('id', None)
+    # print(base_id)
+
+    data = set()
+    # base = Base.objects.get(id = base_id)
+    base = Base.objects.get(id = base_id)
+    # print("--base: {}".format(base))
+    if(base):
+        # print("base: {}".format(base.problema))
+        resp = render_to_string('show_ajax.html', {'data': base})
+        # print("html: {}".format(resp))
+        return HttpResponse(resp)
+    else:
+        return redirect('/buscar')
+

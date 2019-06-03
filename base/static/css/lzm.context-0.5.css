@@ -1,3 +1,4 @@
+/*
 .lzm-dropdown-menu:before {
     border-bottom : 7px solid rgba(0, 0, 0, 0.2);
     border-left   : 7px solid rgba(0, 0, 0, 0);
@@ -19,6 +20,7 @@
     position      : absolute;
     top           : -6px;
 }
+*/
 
 /*
 .lzm-dropdown-menu:hover {
@@ -87,5 +89,6 @@
 }
 
 .lzm-dropdown-item:hover {
+    padding: -10px;
     background-color: #d0d0d0;
 }

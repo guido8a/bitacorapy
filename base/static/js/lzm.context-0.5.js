@@ -180,7 +180,8 @@
                 }
 
                 if (!obj.header) {
-                    var $a = $("<a tabindex='-1' href='#' style='color: #0b2e13; text-decoration: none' > ");
+                    var $a = $("<a tabindex='-1' href='#' style='color: #0b2e13; text-decoration: none; display: block; width: 100%' > ");
+                    // var $a = $("<a tabindex='-1' href='#' >");
                     if ($i) {
                         $a.append($i).append("&nbsp;");
                     }
