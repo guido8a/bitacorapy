@@ -19,3 +19,15 @@ class PerfilAdmin(admin.ModelAdmin):
     search_fields = ('descripcion',)
 
 admin.site.register(models.Perfil, PerfilAdmin)
+
+class ModuloAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'orden',)
+    search_fields = ('nombre',)
+
+admin.site.register(models.Modulo, ModuloAdmin)
+
+class AccionAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'url','orden','modulo')
+    search_fields = ('nombre', 'url','orden','modulo')
+
+admin.site.register(models.Accion, AccionAdmin)

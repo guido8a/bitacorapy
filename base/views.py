@@ -16,6 +16,9 @@ from django.http import HttpResponseRedirect
 from django.db import connection
 from common import funciones
 import time
+
+from django.conf import settings
+from . import urls
 from django.shortcuts import get_object_or_404
 from .forms import FormBase
 from django.views.decorators.http import require_POST
@@ -98,8 +101,8 @@ def buscar(request):
         # print(data[0].tema.descripcion)
         resp = render_to_string('tablaBusquedaBase.html', {'data': data})
         # print("----> {}".format(len(data)))
-        elapsed_time = time.time() - start_time
-        print(elapsed_time)
+        elapsed_time = round((time.time() - start_time)*1000, 0)
+        print("tiempo de ejecución: {} milisecs".format(elapsed_time))
         return HttpResponse(resp)
     else:
         return redirect('/base')
@@ -107,6 +110,18 @@ def buscar(request):
 @csrf_exempt
 def ver_base(request):
     print("ver_base {}".format(request))
+    url = request.path
+    print('url: {}'.format(url))
+
+    """"
+      lista los urls existentes, no funciona "import ulrs" desde funciones
+    """
+    # print(urls.urlpatterns)
+    # for entry in urls.urlpatterns:
+    #     print(entry.name)
+
+    # funciones.urls_lista(urls.urlpatterns)
+
     base_id = request.POST.get('id', None)
     # print(base_id)
 

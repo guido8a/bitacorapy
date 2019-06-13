@@ -2,13 +2,15 @@
 {% load fontawesome %}
 {% fontawesome_stylesheet %}
 
+{% load base_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-­fit=no">
     <!-- Bootstrap CSS -->
-    {% load static %}
+     {% load static %}
     <link  rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
     <title>Bitácora</title>
     <link  rel="stylesheet" href="{% static "css/CustomSvt.css" %}">
@@ -21,34 +23,21 @@
 </head>
 <body>
 {#    {% static "css/bootstrap.min.css" %}#}
-<nav class="navbar navbar-expand-lg navbar-light bg-­light" style="background-color: #eac57b">
-    <a class="navbar-brand" href="/inicio">Bitácora</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item {% if request.path == "/" %}active{% endif %}">
-                <a class="nav-link" href="/inicio">Inicio</a>
-            </li>
-            <li class="nav-item {% if request.path == "/acerca-de/" %} active {% endif %}">
-                <a class="nav-link" href="/acerca-de/">Acerca de</a>
-            </li>
-            <li class="nav-item {% if request.path == "/acerca-de/" %} active {% endif %}">
-                <a class="nav-link" href="/salir">Salir</a>
-            </li>
-        </ul>
-    </div>
-</nav>
-<script type="text/javascript" src="{% static "js/jquery-3.3.1.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/popper.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
-<script src="{% static 'js/bootbox.all.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static "js/jquery-3.3.1.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/popper.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+    {# context menu para el click derecho#}
+	<script type="text/javascript" src="{% static 'js/lzm.context-0.5.js' %}"></script>
+    <script src="{% static 'js/bootbox.all.min.js' %}"></script>
 {# context menu para el click derecho#}
 <script type="text/javascript" src="{% static 'js/lzm.context-0.5.js' %}"></script>
 
+{% menu_dos as menu_mk %}
+{{ menu_mk|safe }}
+
 <div class="container" style="min-width: 1000px !important;">
-    {% block content %}
+	{% block content %}
     {% endblock content %}
 </div>
 

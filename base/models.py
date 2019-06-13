@@ -40,9 +40,9 @@ class Base(models.Model):
     problema    = models.TextField(db_column='baseprbl', max_length=255)
     algoritmo   = models.TextField(db_column='basealgr', max_length=255)
     solucion    = models.TextField(db_column='baseslcn', blank=True)
-    clave       = models.CharField(db_column='baseclve', max_length=127)
-    referencia  = models.TextField(db_column='baserefe', max_length=255)
-    observacion = models.TextField(db_column='baseobsr', max_length=255)
+    clave       = models.CharField(db_column='baseclve', max_length=127, blank=True)
+    referencia  = models.TextField(db_column='baserefe', max_length=255, blank=True)
+    observacion = models.TextField(db_column='baseobsr', max_length=255, blank=True)
     fecha       = models.DateTimeField(db_column='basefcha', auto_now=True)
 
     tema = models.ForeignKey(
@@ -53,3 +53,28 @@ class Base(models.Model):
         # managed = True   # Django crea la tabla, False no se crea
         managed = False
         db_table = 'base'
+
+class Modulo(models.Model):
+    id = models.AutoField(db_column='mdlo__id', primary_key=True)
+    nombre = models.TextField(db_column='mdlonmbr', max_length=255)
+    orden  = models.IntegerField(db_column='mdloordn')
+
+    class Meta:
+        managed = True   # Django crea la tabla, False no se crea
+        # managed = False
+        db_table = 'mdlo'
+
+class Accion(models.Model):
+    id = models.AutoField(db_column='accn__id', primary_key=True)
+    nombre = models.TextField(db_column='accnnmbr', max_length=63)
+    url = models.TextField(db_column='accn_url', max_length=31)
+    orden  = models.IntegerField(db_column='accnordn')
+
+    modulo = models.ForeignKey(
+        Modulo, db_column='mdlo__id', on_delete=models.CASCADE
+    )
+
+    class Meta:
+        managed = True   # Django crea la tabla, False no se crea
+        # managed = False
+        db_table = 'accn'
