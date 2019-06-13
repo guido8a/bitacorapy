@@ -1,9 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 class Tema(models.Model):
     id = models.AutoField(db_column='tema__id', primary_key=True)
     descripcion = models.TextField(db_column='temadscr', max_length=63)
+
+    def __str__(self):
+
+        return self.descripcion
+
     class Meta:
         # managed = True
         managed = False

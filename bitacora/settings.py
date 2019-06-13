@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'base.apps.BaseConfig',
     'fontawesome',
+    'widget_tweaks',
+    'ckeditor',
+    'ckeditor_uploader'
+
     # 'bootstrap4',
 ]
 
@@ -127,3 +131,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#ckeditor upload path
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Basic',
+        'height': 300,
+        'width': 300,
+    },
+    'edicion': {
+        'toolbar': 'Full',
+        'height': 300,
+        'width': 750,
+        'language': 'es',
+        'bodyClass': 'res',
+        'uiColor': '#AADC6E'
+
+    }
+
+}

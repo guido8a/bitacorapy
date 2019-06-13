@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import UpdateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -11,10 +12,13 @@ from django.contrib import auth
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.db import connection
 from common import funciones
 import time
-
+from django.shortcuts import get_object_or_404
+from .forms import FormBase
+from django.views.decorators.http import require_POST
 
 class Conectado(CreateView):
     print("crea home..")
@@ -117,4 +121,40 @@ def ver_base(request):
         return HttpResponse(resp)
     else:
         return redirect('/buscar')
+
+@csrf_exempt
+# def itemActualizar(request,pk):
+def itemActualizar(request):
+    # print(pk)
+    pk=request.GET.get('id')
+    base_inst = get_object_or_404(Base, pk=pk)
+    if request.method == 'POST':
+        form = FormBase(request.POST)
+    else:
+        form = FormBase(initial={'tema': base_inst.tema,
+                                 'observacion': base_inst.observacion,
+                                 'problema': base_inst.problema,
+                                 'solucion': base_inst.solucion,
+                                 'clave': base_inst.clave,
+                                 'algoritmo': base_inst.algoritmo,
+                                 'referencia': base_inst.referencia})
+
+    return render(request, 'item.html', {'form': form})
+
+
+@require_POST
+# def guardar_base(request,pk):
+def guardar_base(request):
+
+    print("entro guardar")
+    # print(pk)
+
+    # base_inst = get_object_or_404(Base, pk=pk)
+
+    # if(base_inst.save()):
+    response = JsonResponse({"message":"success"}, safe=False)
+    # else:
+    #     response = JsonResponse({"error": "error"}, safe=False)
+
+    return response
 

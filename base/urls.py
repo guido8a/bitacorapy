@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.views.generic import TemplateView
 from . import views
 from django.conf.urls import url
@@ -15,5 +15,8 @@ urlpatterns = [
     path("base/", TemplateView.as_view(template_name="busquedaBase.html"), name="base",),
     url(r"^buscar", views.buscar, name='buscar'),
     url(r"^ver_base", views.ver_base, name='ver_base'),
-
+    # url(r'^item/(?P<pk>\d+)/update/$', views.itemActualizar, name='item_actualizar'),
+    url(r"^actualizar/", views.itemActualizar, name='item_actualizar'),
+    url(r"^actualizar/id=(?P<pk>\d+)", views.itemActualizar, name='item_actualizar'),
+    url(r'^guardar', views.guardar_base, name='item_guardar'),
 ]

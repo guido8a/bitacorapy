@@ -38,7 +38,7 @@
         };
 
         var id = $tr.data("id");
-        console.log('id::', id)
+        {#console.log('id::', id)#}
 
         var ver = {
             label: 'Ver',
@@ -79,7 +79,9 @@
             label: 'Editar',
             icon: "fa fa-pencil",
             action: function (e) {
-                {#location.href = '${createLink(controller: 'base', action: 'base')}/' + id#}
+                {#location.href = '{% url 'item_actualizar' '1' %}' + id #}
+                location.href = '{% url 'item_actualizar' %}?id='  + id;
+                {#location.href = '{% url 'item_actualizar' %}/'  + id;#}
             }
         };
 
@@ -92,14 +94,14 @@
         return items
     }
 
-     $("tr").contextMenu({
-            items  : createContextMenu,
-            onShow : function ($element) {
-                $element.addClass("trHighlight");
-            },
-            onHide : function ($element) {
-                $(".trHighlight").removeClass("trHighlight");
-            }
-        });
+    $("tr").contextMenu({
+        items  : createContextMenu,
+        onShow : function ($element) {
+            $element.addClass("trHighlight");
+        },
+        onHide : function ($element) {
+            $(".trHighlight").removeClass("trHighlight");
+        }
+    });
 
 </script>
