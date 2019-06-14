@@ -18,5 +18,5 @@ urlpatterns = [
     # url(r'^item/(?P<pk>\d+)/update/$', views.itemActualizar, name='item_actualizar'),
     url(r"^actualizar/", views.itemActualizar, name='item_actualizar'),
     url(r"^actualizar/id=(?P<pk>\d+)", views.itemActualizar, name='item_actualizar'),
-    url(r'^guardar', views.guardar_base, name='item_guardar'),
+    url(r'^guardar/id=(?P<pk>\d+)', views.guardar_base, name='item_guardar'),
 ]

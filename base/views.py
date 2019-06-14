@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import Perfil
-from .models import Base
+from .models import Base, Tema
 from django.shortcuts import redirect
 from django.contrib.auth.hashers import make_password
 from django.contrib import auth
@@ -152,24 +152,38 @@ def itemActualizar(request):
                                  'solucion': base_inst.solucion,
                                  'clave': base_inst.clave,
                                  'algoritmo': base_inst.algoritmo,
-                                 'referencia': base_inst.referencia})
+                                 'referencia': base_inst.referencia
+                                })
 
-    return render(request, 'item.html', {'form': form})
+    return render(request, 'item.html', {'form': form, 'base': base_inst})
 
 
 @require_POST
-# def guardar_base(request,pk):
-def guardar_base(request):
+def guardar_base(request,pk):
 
-    print("entro guardar")
+    # print("entro guardar")
+    # print(request.POST)
     # print(pk)
 
-    # base_inst = get_object_or_404(Base, pk=pk)
+    base_inst = get_object_or_404(Base, pk=pk)
+    # tema = get_object_or_404(Tema, pk=request.POST['tema'])
+    # base_inst.tema = tema
+    # base_inst.algoritmo = request.POST['algoritmo']
 
-    # if(base_inst.save()):
-    response = JsonResponse({"message":"success"}, safe=False)
-    # else:
-    #     response = JsonResponse({"error": "error"}, safe=False)
+    # print(request.POST.get('algoritmo',''))
+
+    form = FormBase(request.POST, instance=base_inst)
+    form.algoritmo = request.POST['algoritmo']
+
+    if form.is_valid():
+        # print("si")
+        form.save()
+        response = JsonResponse({"message": "success"}, safe=False)
+        # return response
+    else:
+        # print("no")
+        response = JsonResponse({"message": "error"}, safe=False)
+        # return render(request, 'item.html', {'form': form}, status=500)
 
     return response
 

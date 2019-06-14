@@ -37,8 +37,8 @@ class Sesion(models.Model):
 
 class Base(models.Model):
     id = models.AutoField(db_column='base__id', primary_key=True)
-    problema    = models.TextField(db_column='baseprbl', max_length=255)
-    algoritmo   = models.TextField(db_column='basealgr', max_length=255)
+    problema    = models.TextField(db_column='baseprbl', max_length=255, blank=False)
+    algoritmo   = models.TextField(db_column='basealgr')
     solucion    = models.TextField(db_column='baseslcn', blank=True)
     clave       = models.CharField(db_column='baseclve', max_length=127, blank=True)
     referencia  = models.TextField(db_column='baserefe', max_length=255, blank=True)

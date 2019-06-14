@@ -18,76 +18,17 @@
             /*font-size: medium;*/
             text-align: right;
         }
-        {#.sobrepuesto {#}
-        {#    position: absolute;#}
-        {#    top: 1px;#}
-        {#    font-size: 14px;#}
-        {# }#}
-
-
-        .nav-tabs > li > a{
-            border: medium none;
-
-        }
-        .nav-tabs > li > a:hover{
-            background-color: #475563 !important;
-            border: medium none;
-            border-radius: 0;
-            color:#fff;
-            /*color:#475563 !important;;*/
-        }
-
-
-        .progress-bar-svt {
-            border     : 1px solid #e5e5e5;
-            width      : 100%;
-            height     : 25px;
-            background : #F5F5F5;
-            padding    : 0;
-            margin-top : 10px;
-        }
-
-        .progress-svt {
-            width            : 0;
-            height           : 23px;
-            padding-top      : 5px;
-            padding-bottom   : 2px;
-            background-color : #428BCA;
-            text-align       : center;
-            line-height      : 100%;
-            font-size        : 14px;
-            font-weight      : bold;
-        }
-
-        .background-image {
-            background-image  : -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 10%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
-            background-image  : linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
-            -webkit-animation : progress-bar-stripes-svt 2s linear infinite;
-            background-size   : 60px 60px;
-            animation         : progress-bar-stripes-svt 2s linear infinite;
-        }
-
-        @-webkit-keyframes progress-bar-stripes-svt {
-            /*el x del from tiene que ser multiplo del x del background size...... mientas mas grande mas rapida es la animacion*/
-            from {
-                background-position : 120px 0;
-            }
-            to {
-                background-position : 0 0;
-            }
-        }
-
-        @keyframes progress-bar-stripes-svt {
-            from {
-                background-position : 120px 0;
-            }
-            to {
-                background-position : 0 0;
-            }
-        }
 
         .res{
             resize: none;
+        }
+
+        .verde{
+            color: #2abf63;
+        }
+
+        .rojo{
+            color: #c71b1b;
         }
 
 
@@ -284,33 +225,52 @@
     <script type="text/javascript">
 
         $("#btnGuardar").click(function () {
-            console.log("click guardar")
             {#$("#formBase").submit()#}
+
+
+            {#$("#formBase").submit(function () {#}
             var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+            var ser = $("#formBase").serialize();
+
+            for (var instance in CKEDITOR.instances)
+                CKEDITOR.instances[instance].updateElement();
+
             $.ajax({
                 type: 'POST',
                 {#url: "{% url 'author_delete' author.id%}",#}
-                {#url: "{% url 'item_guardar' form.id%}",#}
-                url: "{% url 'item_guardar'%}",
+                url: "{% url 'item_guardar' base.id%}",
+                {#url: "{% url 'item_guardar'%}",#}
                 dataType: "json",
-                data:{
-                    id: '{{ form.id }}',
-                    csrfmiddlewaretoken: csrfToken,
-                },
+                {#data:{#}
+                {#id: '{{ base.id }}',#}
+                {#    csrfmiddlewaretoken: csrfToken,#}
+                {#    algoritmo: $("#id_algoritmo").val(),#}
+                {#    problema: ser#}
+                {# },#}
+                data: ser,
                 success: (function (data) {
-                    {#console.log(data)#}
-                    bootbox.alert({
-                        title: 'Guardado Correctamente',
-                        message: 'Se ha guardado correctamente',
-                        callback: function (){
-                            {#location.href='{% url 'author' %}'#}
-                        }
-                    });
+                    {#console.log(data['message']);#}
+                    if(data['message'] == 'success'){
+                        bootbox.alert({
+                            title: 'Guardado Correctamente',
+                            message: "<i class='fa fa-check verde'></i>" +  " <strong class='verde'> Se ha guardado correctamente </strong>",
+                            callback: function (){
+                            }
+                        });
+                    }else{
+                        bootbox.alert({
+                            title: 'Error',
+                            message: "<i class='fa fa-close rojo'></i>" +  " <strong class='rojo'> No se pudo guardar la información! </strong>",
+                            callback: function (){
+                            }
+                        });
+                    }
                 }),
                 error: (function (data){
                     bootbox.alert("Error al guardar la información!")
                 })
             });
+            {# });#}
 
 
 
