@@ -5,7 +5,7 @@
 
 
     {% load static %}
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+{#    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>#}
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 
@@ -32,6 +32,7 @@
         }
 
 
+
     </style>
 
     {% load widget_tweaks %}
@@ -44,19 +45,24 @@
                class="btn btn-sm btn-primary sobrepuesto" title="Consultar artículo">
                 <i class="fa fa-chevron-left"></i> Consultar
             </a>
-            <a href="#" id="btnGuardar" class="btn btn-sm btn-success sobrepuesto" title="Guardar información">
+            <a href="#" id="btnGuardar" class="btn btn-sm btn-success" title="Guardar información" >
                 <i class="fa fa-save"></i> Guardar
             </a>
-            <a href="#" id="btnImprimir" class="btn btn-sm btn-info sobrepuesto"  title="Imprimir artículo">
-                <i class="fa fa-print"></i> Imprimir
-            </a>
-            <a href="#" id="btnBase" class="btn btn-sm btn-primary sobrepuesto"
+            <a href="#" id="btnBase" class="btn btn-sm btn-primary"
                title="Crear nuevo registro">
                 <i class="fa fa-check"></i> Crear Nuevo
             </a>
-            <a href="#" id="btnVer" class="btn btn-sm btn-warning sobrepuesto" title="Ver registro">
-                <i class="fa fa-search"></i> Ver
-            </a>
+            {%  if base.id %}
+                <a href="#" id="btnImprimir" class="btn btn-sm btn-info"  title="Imprimir artículo">
+                    <i class="fa fa-print"></i> Imprimir
+                </a>
+
+                <a href="#" id="btnVer" class="btn btn-sm btn-warning sobrepuesto" title="Ver registro">
+                    <i class="fa fa-search"></i> Ver
+                </a>
+
+            {% endif %}
+
         </div>
 
         <div class="alert alert-dark">
@@ -68,24 +74,10 @@
         </div>
     </div>
 
-
-    {#         {% for row in form.fields.values %}#}
-    {##}
-    {#             {{ row }}#}
-    {##}
-    {#         {% endfor %}#}
-
-
-    {#        {{ form.as_table }}#}
-
-
-    {#        {{ form.media }}#}
-    {#        {{ form.as_p }}#}
-
-
     <div class="form-group"  style="height: 400px;">
         <div class="col-md-12" style="margin-top: 30px">
-            <form action="" method="post" id="formBase" novalidate>
+            {#            <form action="item.html" method="post" id="formBase" novalidate>#}
+            <form action="" method="post" id="formBase">
                 {% csrf_token %}
 
                 {% if form.non_field_errors %}
@@ -112,9 +104,10 @@
                 </div>
                 <div class="row" style="margin-bottom: 10px">
                     <div class="col-md-2">
-                        <span class="col-md-2 label label-primary text-info mediano">{{ form.problema.label}}</span>
+                        <span class="col-md-2 label label-primary text-info mediano">{{ form.problema.label}}{{ form.problema.errors }}</span>
                     </div>
                     <div class="col-md-10 res">
+
                         {% if form.is_bound %}
                             {% if form.problema.errors %}
                                 {%  render_field form.problema class='col-md-10 form-control is-invalid' style='resize:none; height: 50px' %}
@@ -222,60 +215,212 @@
         </div>
     </div>
 
+
+
+    <div class="modal fade " id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Problema y Solución..
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body" id="dialog-body" style="padding: 15px">
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+
     <script type="text/javascript">
 
-        $("#btnGuardar").click(function () {
-            {#$("#formBase").submit()#}
+        var spinnerUrl = "{% static "images/spinner32.gif" %}";
+    	var spinner = $("<img src='" + spinnerUrl + "' alt='Cargando...'/>");
 
-
-            {#$("#formBase").submit(function () {#}
-            var csrfToken = $('[name=csrfmiddlewaretoken]').val();
-            var ser = $("#formBase").serialize();
-
-            for (var instance in CKEDITOR.instances)
-                CKEDITOR.instances[instance].updateElement();
-
+        $("#btnVer").click(function () {
+            $("#dialog-body").html(spinner);
             $.ajax({
                 type: 'POST',
-                {#url: "{% url 'author_delete' author.id%}",#}
-                url: "{% url 'item_guardar' base.id%}",
-                {#url: "{% url 'item_guardar'%}",#}
-                dataType: "json",
-                {#data:{#}
-                {#id: '{{ base.id }}',#}
-                {#    csrfmiddlewaretoken: csrfToken,#}
-                {#    algoritmo: $("#id_algoritmo").val(),#}
-                {#    problema: ser#}
-                {# },#}
-                data: ser,
-                success: (function (data) {
-                    {#console.log(data['message']);#}
-                    if(data['message'] == 'success'){
-                        bootbox.alert({
-                            title: 'Guardado Correctamente',
-                            message: "<i class='fa fa-check verde'></i>" +  " <strong class='verde'> Se ha guardado correctamente </strong>",
-                            callback: function (){
-                            }
-                        });
-                    }else{
+                {#url: "/ver_base",#}
+                url: "{% url 'ver_base' %}",
+                data: {
+                    id: "{{ base.id }}"
+                },
+                success: function (msg) {
+                    $("#dialog-body").html(msg)
+                }
+            });
+            $("#dialog").modal("show");
+        });
+
+
+        $("#btnBase").click(function () {
+            location.href="{% url 'item_crear' %}"
+        });
+
+        $("#btnGuardar").click(function () {
+            {#$("#formBase").submit();#}
+
+            $("#btnGuardar").addClass('disabled');
+
+            var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+            for (var instance in CKEDITOR.instances)
+                CKEDITOR.instances[instance].updateElement();
+            var ser = $("#formBase").serialize();
+
+
+            if ('{{ base }}'){
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'item_actualizar' %}?id=" + '{{ base.id }}',
+                    dataType: "json",
+                    data: ser,
+                    success: (function (data) {
+                        {#console.log(data['message']);#}
+                        if(data['message'] == 'success'){
+                            {#bootbox.alert({#}
+                            {#    title: 'Guardado Correctamente',#}
+                            {#    message: "<i class='fa fa-check verde'></i>" +  " <strong class='verde'> Se ha guardado correctamente </strong>",#}
+                            {#    callback: function (){#}
+                            {#    }#}
+                            {# });#}
+
+
+                            var dialog = bootbox.dialog({
+                                title: 'Guardar',
+                                message: '<p><i class="fa fa-spin fa-spinner"></i> Guardando...</p>',
+                                buttons: {
+                                    cancel: {
+                                        label: "Cerrar",
+                                        className: 'btn-info',
+                                        callback: function () {
+
+                                        }
+                                    },
+                                }
+                            });
+
+                            dialog.init(function(){
+                                setTimeout(function(){
+                                    dialog.find('.bootbox-body').html("<i class='fa fa-check verde'></i>" +  " <strong class='verde'> Se ha guardado correctamente </strong>");
+                                    $("#btnGuardar").removeClass('disabled')
+                                }, 1000);
+                            });
+
+                        }else{
+                            {#bootbox.alert({#}
+                            {#    title: 'Error',#}
+                            {#    message: "<i class='fa fa-close rojo'></i>" +  " <strong class='rojo'> No se pudo guardar la información! </strong>",#}
+                            {#    callback: function (){#}
+                            {#    }#}
+                            {# });#}
+
+
+
+
+                        }
+                    }),
+                    error: (function (data){
+                        var errors = JSON.parse(data.responseText);
+                        var todos = [];
+                        var resul = '';
+                        for (error in errors) {
+                            todos.push(error)
+                        }
+
+                        todos.forEach(funcionIteracion);
+                        function funcionIteracion (value) {
+                            resul = resul + "<li>" + "Ingrese un " + value + "</li>";
+                        }
                         bootbox.alert({
                             title: 'Error',
-                            message: "<i class='fa fa-close rojo'></i>" +  " <strong class='rojo'> No se pudo guardar la información! </strong>",
+                            message: "<i class='fa fa-close rojo'></i>" +  " <strong class='rojo'> No se pudo guardar la información! </strong>" + resul,
                             callback: function (){
                             }
                         });
-                    }
-                }),
-                error: (function (data){
-                    bootbox.alert("Error al guardar la información!")
-                })
-            });
-            {# });#}
+
+                    })
+                });
+            }else{
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'item_crear' %}",
+                    dataType: "json",
+                    data: ser,
+                    success: (function (data) {
+                        if(data['message'] == 'success'){
+                            {#bootbox.alert({#}
+                            {#    title: 'Guardado Correctamente',#}
+                            {#    message: "<i class='fa fa-check verde'></i>" +  " <strong class='verde'> Se ha guardado correctamente </strong>",#}
+                            {#    callback: function (){#}
+                            {#        location.href="{%  url 'base' %}"#}
+                            {#    }#}
+                            {# });#}
 
 
 
+                            var dialog = bootbox.dialog({
+                                title: 'Guardar',
+                                message: '<p><i class="fa fa-spin fa-spinner"></i> Guardando...</p>',
+                                buttons: {
+                                    cancel: {
+                                        label: "Cerrar",
+                                        className: 'btn-info',
+                                        callback: function () {
+
+                                        }
+                                    },
+                                }
+                            });
+
+                            dialog.init(function(){
+                                setTimeout(function(){
+                                    dialog.find('.bootbox-body').html("<i class='fa fa-check verde'></i>" +  " <strong class='verde'> Se ha guardado correctamente </strong>");
+                                    $("#btnGuardar").removeClass('disabled')
+                                }, 1000);
+                            });
 
 
+                        }else{
+                            bootbox.alert({
+                                title: 'Error',
+                                message: "<i class='fa fa-close rojo'></i>" +  " <strong class='rojo'> No se pudo guardar la información! </strong>",
+                                callback: function (){
+                                }
+                            });
+                        }
+                    }),
+                    error: (function (data){
+                        var errors = JSON.parse(data.responseText);
+
+                        {#console.log("errors " + errors)#}
+                        var todos = [];
+                        var resul = '';
+
+                        for (error in errors) {
+                            todos.push(error)
+                        }
+
+                        todos.forEach(funcionIteracion);
+
+                        function funcionIteracion (value) {
+                            resul = resul + "<li>" + "Ingrese " + "<strong>" + value + "</strong>" +  "</li>";
+                        }
+                        bootbox.alert({
+                            title: 'Error',
+                            message: "<i class='fa fa-close rojo'></i>" +  " <strong class='rojo'> No se pudo guardar la información! </strong>" + resul,
+                            callback: function (){
+                            }
+                        });
+
+                    })
+                });
+            }
         });
 
     </script>

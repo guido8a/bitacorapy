@@ -44,7 +44,7 @@
 
     <div>
         <div class="col-md-12">
-            Buscar en la base de conocimiento por:
+            Buscar actividades por:
             <div class="btn-group">
                 <input id="buscar" type="search" class="form-control">
                 <span id="limpiaBuscar" class="glyphicon glyphicon-remove-circle"
@@ -52,23 +52,25 @@
             </div>
             <a href="#" name="busqueda" class="btn btn-info btnBusqueda btn-ajax"><i
                     class="fa fa-check-square-o"></i> Buscar</a>
-            <a href="#" id="actualizarPlbr" class="btn btn-success btnActualizar"><i
-                    class="fa fa-code-fork"></i> Actualiza Buscador</a>
         </div>
     </div>
 </div>
 
 <div style="margin-top: 30px; min-height: 650px" class="vertical-container">
-    <p class="css-vertical-text">Resultado - Buscar en la Base de Conocimiento</p>
+    <p class="css-vertical-text">Resultado - Buscar en Actividades</p>
 
     <div class="linea"></div>
     <table class="table table-bordered table-hover table-condensed" style="width: 1070px">
         <thead>
         <tr>
-            <th class="alinear" style="width: 120px">Tema</th>
-            <th class="alinear" style="width: 240px">Palabras clave</th>
-            <th class="alinear" style="width: 240px">Problema</th>
-            <th class="alinear" style="width: 460px">Solución</th>
+            <th class="alinear" style="width: 15%">Prioridad</th>
+            <th class="alinear" style="width: 15%">Actividad Padre</th>
+            <th class="alinear" style="width: 15%">Actividad</th>
+            <th class="alinear" style="width: 15%">Responsable</th>
+            <th class="alinear" style="width: 10%">Horas</th>
+            <th class="alinear" style="width: 10%">Real</th>
+            <th class="alinear" style="width: 10%">Inicio</th>
+            <th class="alinear" style="width: 10%">Fin</th>
         </tr>
         </thead>
     </table>
@@ -85,7 +87,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                Problema y Solución..
+                 Detalles
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
 
@@ -101,7 +103,7 @@
 </div>
 
 <script type="text/javascript">
-    var spinnerUrl = "{% static "images/spinner32.gif" %}"
+    var spinnerUrl = "{% static "images/spinner32.gif" %}";
 
 	var spinner = $("<img src='" + spinnerUrl + "' alt='Cargando...'/>");
 
@@ -118,7 +120,6 @@
         var buscar = $("#buscar").val();
         $.ajax({
             type: "POST",
-            {#url: "/buscar/",#}
             url: "{% url 'buscar' %}",
             data: {
                 buscar: buscar

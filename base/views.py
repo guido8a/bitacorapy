@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
@@ -11,17 +12,24 @@ from django.contrib.auth.hashers import make_password
 from django.contrib import auth
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.db import connection
 from common import funciones
 import time
+from django.shortcuts import render_to_response
+
+import json as simplejson
+import json
+
+
 
 from django.conf import settings
 from . import urls
 from django.shortcuts import get_object_or_404
 from .forms import FormBase
 from django.views.decorators.http import require_POST
+
 
 class Conectado(CreateView):
     print("crea home..")
@@ -105,7 +113,8 @@ def buscar(request):
         print("tiempo de ejecución: {} milisecs".format(elapsed_time))
         return HttpResponse(resp)
     else:
-        return redirect('/base')
+        return render (request, 'tablaBusquedaBase.html')
+        # return redirect('base')
 
 @csrf_exempt
 def ver_base(request):
@@ -140,12 +149,56 @@ def ver_base(request):
 @csrf_exempt
 # def itemActualizar(request,pk):
 def itemActualizar(request):
-    # print(pk)
+
+    # print(request.POST)
+    print(request)
     pk=request.GET.get('id')
     base_inst = get_object_or_404(Base, pk=pk)
+
     if request.method == 'POST':
-        form = FormBase(request.POST)
+        # print("si post")
+        form = FormBase(request.POST,instance=base_inst)
+
+        if form.is_valid():
+            # print("si valid")
+            form.save()
+            response = JsonResponse({"message": "success"}, safe=False)
+            return response
+        else:
+            # print("no valid")
+            # form = FormBase()
+            # errors = form.errors
+            # return render(request,'item.html', {'form:': form})
+            # response = JsonResponse({"message": "error"}, safe=False)
+            # return response
+            # print("errores".join(errors))
+            # return JsonResponse(errors, status=400)
+            # return HttpResponseBadRequest(errors)
+            # return HttpResponse(json.dumps(errors), content_type='application/json')
+            # print(simplejson.dumps(errors))
+            # return HttpResponse(simplejson.dumps(errors))
+            # html = render_to_string('item.html', {'form': form})
+            # return HttpResponse(request.POST)
+            # return JsonResponse(form.errors)
+            # return HttpResponseBadRequest(json.dumps(form.errors),content_type="application/json")
+            # resp = render_to_string('item.html', {'data': form})
+            # return HttpResponse(resp)
+
+            errors_dict = {}
+            if form.errors:
+                for error in form.errors:
+                    e = form.errors[error]
+                    errors_dict[error] = str(e)
+                return HttpResponseBadRequest(json.dumps(errors_dict))
+                # return HttpResponse(simplejson.dumps(errors_dict))
+
+                # response = JsonResponse({"message": "success"}, safe=False)
+                # return response
+            else:
+                pass
+
     else:
+        print("no post")
         form = FormBase(initial={'tema': base_inst.tema,
                                  'observacion': base_inst.observacion,
                                  'problema': base_inst.problema,
@@ -153,37 +206,70 @@ def itemActualizar(request):
                                  'clave': base_inst.clave,
                                  'algoritmo': base_inst.algoritmo,
                                  'referencia': base_inst.referencia
-                                })
+                                 })
 
-    return render(request, 'item.html', {'form': form, 'base': base_inst})
+        return render(request, 'item.html', {'form': form, 'base': base_inst})
 
 
-@require_POST
-def guardar_base(request,pk):
-
-    # print("entro guardar")
+def itemCrear(request):
     # print(request.POST)
-    # print(pk)
 
-    base_inst = get_object_or_404(Base, pk=pk)
-    # tema = get_object_or_404(Tema, pk=request.POST['tema'])
-    # base_inst.tema = tema
-    # base_inst.algoritmo = request.POST['algoritmo']
-
-    # print(request.POST.get('algoritmo',''))
-
-    form = FormBase(request.POST, instance=base_inst)
-    form.algoritmo = request.POST['algoritmo']
-
-    if form.is_valid():
-        # print("si")
-        form.save()
-        response = JsonResponse({"message": "success"}, safe=False)
-        # return response
+    if request.method == 'POST':
+        form = FormBase(request.POST)
+        if form.is_valid():
+          # print("si valid")
+          form.save()
+          response = JsonResponse({"message": "success"}, safe=False)
+          return response
+        else:
+            # print("no valid")
+            errors_dict = {}
+            if form.errors:
+                  for error in form.errors:
+                      e = form.errors[error]
+                      errors_dict[error] = str(e)
+                  return HttpResponseBadRequest(json.dumps(errors_dict))
+            else:
+                pass
     else:
-        # print("no")
-        response = JsonResponse({"message": "error"}, safe=False)
-        # return render(request, 'item.html', {'form': form}, status=500)
+        form = FormBase()
+        return render(request, 'item.html', {'form': form})
 
-    return response
+
+# @csrf_exempt
+# def buscarActividad(request):
+#     start_time = time.time()
+#     print("buscar {}".format(request))
+#     print(request.POST.get('buscar', None))
+#
+#     buscar = tuple(request.POST.get('buscar', None).split(' '))
+#     print(buscar)
+#     # sql = "select base__id from plbr where plbrplbr like '%{}%' group by base__id order by sum(plbrvlor) desc".format(buscar[0])
+#     sql = "select ac.actv__id id, prdddscr prioridad, pdre.actvdscr padre, ac.actvdscr descripcion, " +
+#                 "prsnnmbr||' '||prsnapll responsable, ac.actvhora horas, ac.actvtmpo tiempo, ac.actvfcha, ac.actvfcin, ac.actvfcfn, ac.actvavnc " +
+#                 "from actv ac left join actv pdre on pdre.actv__id = ac.actvpdre, prsn, prdd " +
+#                 "where prdd.prdd__id = ac.prdd__id and ac.actvdscr ilike '%{params.buscar}%' and " +
+#                 " prsn.prsn__id = ac.prsnpara and prdd.prdd__id = ac.prdd__id " +
+#                 "order by ac.actvfcha, ac.actvdscr limit 21"
+#
+#     print(sql)
+#     # retorna = ejecuta_sql(sql)
+#     retorna = funciones.ejecutaSql(sql)
+#     data = set()
+#     for d in retorna:
+#         # print(d)
+#         # print("id: {}".format(d[0]))
+#         base = Base.objects.get(id=d[0])
+#         data.add(base)
+#
+#     if(data):
+#         # print(data[0].tema.descripcion)
+#         resp = render_to_string('tablaBusquedaBase.html', {'data': data})
+#         # print("----> {}".format(len(data)))
+#         elapsed_time = round((time.time() - start_time)*1000, 0)
+#         print("tiempo de ejecución: {} milisecs".format(elapsed_time))
+#         return HttpResponse(resp)
+#     else:
+#         return render (request, 'tablaBusquedaBase.html')
+#         # return redirect('base')
 

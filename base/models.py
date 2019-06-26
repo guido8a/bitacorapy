@@ -40,7 +40,7 @@ class Base(models.Model):
     problema    = models.TextField(db_column='baseprbl', max_length=255, blank=False)
     algoritmo   = models.TextField(db_column='basealgr')
     solucion    = models.TextField(db_column='baseslcn', blank=True)
-    clave       = models.CharField(db_column='baseclve', max_length=127, blank=True)
+    clave       = models.CharField(db_column='baseclve', max_length=127, blank=False)
     referencia  = models.TextField(db_column='baserefe', max_length=255, blank=True)
     observacion = models.TextField(db_column='baseobsr', max_length=255, blank=True)
     fecha       = models.DateTimeField(db_column='basefcha', auto_now=True)

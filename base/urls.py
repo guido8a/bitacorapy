@@ -18,5 +18,7 @@ urlpatterns = [
     # url(r'^item/(?P<pk>\d+)/update/$', views.itemActualizar, name='item_actualizar'),
     url(r"^actualizar/", views.itemActualizar, name='item_actualizar'),
     url(r"^actualizar/id=(?P<pk>\d+)", views.itemActualizar, name='item_actualizar'),
-    url(r'^guardar/id=(?P<pk>\d+)', views.guardar_base, name='item_guardar'),
+    url(r"^crear/$", views.itemCrear, name='item_crear'),
+    url(r"^actividad/$", TemplateView.as_view(template_name="busquedaActividad.html"), name="actividad",),
+    # url(r"^buscarActividad", views.buscarActividad, name='buscar_actividad'),
 ]
