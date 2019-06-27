@@ -25,7 +25,7 @@ SECRET_KEY = 'q55-+qg(v7ud_2ppa13h55y4a7yp8bnwl1ud^kd76&(mk_956$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.100.3']
+ALLOWED_HOSTS = ['192.168.100.3', '192.168.100.1']
 
 
 # Application definition
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base.apps.BaseConfig',
-    'fontawesome',
     'widget_tweaks',
     'ckeditor',
     'ckeditor_uploader'

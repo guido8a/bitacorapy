@@ -77,7 +77,7 @@
 
         var editar = {
             label: 'Editar',
-            icon: "fa fa-pencil",
+            icon: "fa fa-edit",
             action: function (e) {
                 {#location.href = '{% url 'item_actualizar' '1' %}' + id #}
                 location.href = '{% url 'item_actualizar' %}?id='  + id;

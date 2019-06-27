@@ -11,7 +11,8 @@
 </style>
 
         <div style="text-align: center; width: 100%; margin-left: 35%; margin-top: 20%">
-            <form id="frmLogin" action="/index/" method="POST" class="form-signin well" role="form" style="width: 300px;">
+{#            <form id="frmLogin" action="/index/" method="POST" class="form-signin well" role="form" style="width: 300px;">#}
+            <form id="frmLogin" action="{% url 'indice' %}" method="POST" class="form-signin well" role="form" style="width: 300px;">
                 <h2 class="text-center">Perfil</h2>
 {#                {{ perfiles }}#}
                 {% csrf_token %}

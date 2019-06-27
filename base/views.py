@@ -77,6 +77,7 @@ def index(request):
         request.session['prfl'] = prfl
         # return redirect('/perfil', {'perfiles': prfl})
         return render(request, 'inicio.html')
+        # return redirect('inicio')
     else:
         return redirect('/', {'perfiles': Perfil.objects.all()})
 

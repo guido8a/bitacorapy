@@ -49,6 +49,10 @@ class Base(models.Model):
         Tema, db_column='tema__id', on_delete=models.CASCADE
     )
 
+    usro = models.ForeignKey(
+        User, db_column='usro__id', on_delete=models.CASCADE
+    )
+
     class Meta:
         # managed = True   # Django crea la tabla, False no se crea
         managed = False

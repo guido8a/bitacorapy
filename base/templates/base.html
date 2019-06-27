@@ -1,6 +1,6 @@
 {% load static %}
-{% load fontawesome %}
-{% fontawesome_stylesheet %}
+{#{% load fontawesome %}#}
+{#{% fontawesome_stylesheet %}#}
 
 {% load base_tags %}
 
@@ -17,6 +17,8 @@
     <link  rel="stylesheet" href="{% static "css/font-tulpen/stylesheet.css" %}">
     <link  rel="stylesheet" href="{% static "css/custom/tablas.css" %}">
 
+    <link  rel="stylesheet" href="{% static "css/fontawesome.min.css" %}">
+
     <link  rel="stylesheet" href="{% static "css/lzm.context-0.5.css" %}">
 
     <title>Bitácora</title>
@@ -30,6 +32,8 @@
     {# context menu para el click derecho#}
 	<script type="text/javascript" src="{% static 'js/lzm.context-0.5.js' %}"></script>
     <script src="{% static 'js/bootbox.all.min.js' %}"></script>
+
+    <script src="{% static 'js/fontawesome.all.min.js' %}"></script>
 {# context menu para el click derecho#}
 <script type="text/javascript" src="{% static 'js/lzm.context-0.5.js' %}"></script>
 
