@@ -108,6 +108,7 @@ def buscar(request):
         # print("id: {}".format(d[0]))
         base = Base.objects.get(id=d[0])
         data.add(base)
+        print("dato base: {} : {}".format(base.id, base.usro))
 
     if(data):
         # print(data[0].tema.descripcion)
