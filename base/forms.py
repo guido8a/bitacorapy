@@ -9,7 +9,6 @@ from ckeditor.widgets import CKEditorWidget
 
 
 class FormBase(ModelForm):
-# class FormBase(forms.Form):
     algoritmo = forms.CharField(widget=CKEditorWidget(config_name='edicion'))
     # usro = forms.ForeignKey(required=False)
 

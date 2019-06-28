@@ -221,7 +221,7 @@ def itemCrear(request):
 
     if request.method == 'POST':
         form = FormBase(request.POST)
-        # form.errors.pop("usro")
+        form.errors.pop("usro")
         if form.is_valid():
             # print("si valid")
             session = Session.objects.get(session_key=request.session.session_key)
@@ -229,10 +229,12 @@ def itemCrear(request):
             uid = session_data.get('id')
             user = User.objects.get(id=uid)
 
-            form.cleaned_data['usro'] = user
-            print(form.usro)
-            form.save()
-            print(form)
+            obj = form.save(commit=False)
+            obj.usro = user
+            obj.save()
+            # form.cleaned_data['usro'] = user
+            # form.save()
+            # print(form)
             response = JsonResponse({"message": "success"}, safe=False)
             return response
         else:
