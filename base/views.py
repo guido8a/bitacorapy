@@ -21,6 +21,7 @@ from django.shortcuts import render_to_response
 
 import json as simplejson
 import json
+from django.contrib.sessions.models import Session
 
 
 
@@ -48,11 +49,13 @@ def ingreso(request):
     usuario = User.objects.filter(username__iexact=username).only('username','password')
     user = auth.authenticate(request, username=username, password=pswd)
     print("autenticado: {}".format(user))
+
     if(user):
         data = {
             'resp': 'ok',
         }
         request.session['usro'] = username
+        request.session['id'] = user.id
         prfl = Perfil.objects.all()
         print("--> {} {}".format(prfl[0].id, prfl[0].descripcion))
         # return redirect('/perfil', {'perfiles': prfl})
@@ -217,19 +220,29 @@ def itemCrear(request):
 
     if request.method == 'POST':
         form = FormBase(request.POST)
+        # form.errors.pop("usro")
         if form.is_valid():
-          # print("si valid")
-          form.save()
-          response = JsonResponse({"message": "success"}, safe=False)
-          return response
+            # print("si valid")
+            session = Session.objects.get(session_key=request.session.session_key)
+            session_data = session.get_decoded()
+            uid = session_data.get('id')
+            user = User.objects.get(id=uid)
+
+            form.cleaned_data['usro'] = user
+            print(form.usro)
+            form.save()
+            print(form)
+            response = JsonResponse({"message": "success"}, safe=False)
+            return response
         else:
             # print("no valid")
             errors_dict = {}
             if form.errors:
-                  for error in form.errors:
-                      e = form.errors[error]
-                      errors_dict[error] = str(e)
-                  return HttpResponseBadRequest(json.dumps(errors_dict))
+                for error in form.errors:
+                    print(error)
+                    e = form.errors[error]
+                    errors_dict[error] = str(e)
+                return HttpResponseBadRequest(json.dumps(errors_dict))
             else:
                 pass
     else:

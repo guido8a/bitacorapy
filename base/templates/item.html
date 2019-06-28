@@ -326,6 +326,7 @@
                         }
                     }),
                     error: (function (data){
+                        $("#btnGuardar").removeClass('disabled')
                         var errors = JSON.parse(data.responseText);
                         var todos = [];
                         var resul = '';
@@ -396,18 +397,15 @@
                         }
                     }),
                     error: (function (data){
+                       $("#btnGuardar").removeClass('disabled')
                         var errors = JSON.parse(data.responseText);
-
                         {#console.log("errors " + errors)#}
                         var todos = [];
                         var resul = '';
-
                         for (error in errors) {
                             todos.push(error)
                         }
-
                         todos.forEach(funcionIteracion);
-
                         function funcionIteracion (value) {
                             resul = resul + "<li>" + "Ingrese " + "<strong>" + value + "</strong>" +  "</li>";
                         }

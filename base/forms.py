@@ -11,10 +11,16 @@ from ckeditor.widgets import CKEditorWidget
 class FormBase(ModelForm):
 # class FormBase(forms.Form):
     algoritmo = forms.CharField(widget=CKEditorWidget(config_name='edicion'))
+    # usro = forms.ForeignKey(required=False)
+
+    # def clean_usro(self):
+    #     usro = self.cleaned_data['usro']
+    #     return usro
 
     class Meta:
         model = Base
-        fields = ['tema','observacion','problema', 'clave', 'solucion', 'algoritmo', 'referencia']
+        # exclude = ('usro',)
+        fields = ['tema','observacion','problema', 'clave', 'solucion', 'algoritmo', 'referencia', 'usro']
         labels = {
             'tema': _('Tema'),
             'observacion': _('Observaciones'),
@@ -41,3 +47,4 @@ class FormBase(ModelForm):
                 'required': _("Ingrese una o más palabras clave")
             }
         }
+
